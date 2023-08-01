@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<navbar />
+		<navbar :teams="this.teams" />
 		<router-view/>
 	</div>
   
@@ -20,13 +20,25 @@ export default {
     },
     data() {
         return {
-            
+            teams: [],
+            leagueInfo: {}
         }
     },
     props: {
         player: {}
     },
     mounted() {
+        return Promise.all([
+            this.$ymysApi.get("/teams"),
+        ]).then((responses) => {
+            const [teamsResponse] = responses;
+            this.teams = teamsResponse.data.results.map((team) => {
+                return { ...team, value: team.name,  href: `/team/${team.espn_team_id}`};
+            });
+        })
+        .catch((error) => {
+            console.error(error.response);
+        });
         
     },
     methods: {
@@ -48,5 +60,13 @@ export default {
 
 .table-dark {
     color: rgb(237, 237, 237);
+}
+
+.table {
+    white-space: nowrap !important;
+}
+
+.table th {
+    padding: 0 5px !important;
 }
 </style>

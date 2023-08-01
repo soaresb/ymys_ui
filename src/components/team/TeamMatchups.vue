@@ -1,25 +1,33 @@
 <template>
-    <div class="row">
-        Opponent
-        <div class="col-1">
-            <dropdown class="opponent-dropdown" :name="this.opponent.name" :options="opponents" v-on:updateOption="onSelectOpponent" :placeholder="'Opponent'" value="Opponent"></dropdown>
+    <div class="container" style="margin: 15px 0;">
+        <div class="row">
+            <div class="col-2 col-sm-4">
+            </div>
+            <div class="col-8 col-sm-4" style="text-overflow: ellipsis;">
+                <dropdown class="opponent-dropdown" :name="this.opponent.name" :options="opponents" v-on:updateOption="onSelectOpponent" :placeholder="'Opponent'"></dropdown>
+            </div>
+            <div class="col-2 col-sm-4">
+            </div>
         </div>
     </div>
-    <table class="table table-scroll table-striped table-dark">
-        <thead>
-            <th class="team-matchups-header">Year</th>
-            <th class="team-matchups-header">Week</th>
-            <th class="team-matchups-header">Team</th>
-            <th :class="[teamScoreClass]" v-on:click="this.sortMatchups('team_score')">
-                Score
-            </th>
-            <th class="team-matchups-header">Opponent</th>
-            <th :class="[opponentScoreClass]" v-on:click="this.sortMatchups('opponent_team_score')">Opponent Score</th>
-        </thead>
-        <tbody>
-            <team-matchup v-for="matchup in this.matchups" v-bind:key="matchup.id" :matchup="matchup"/>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-scroll table-striped table-dark">
+            <thead>
+                <th class="team-matchups-header">Year</th>
+                <th class="team-matchups-header">Week</th>
+                <th class="team-matchups-header">Result</th>
+                <th class="team-matchups-header">Team</th>
+                <th :class="[teamScoreClass]" v-on:click="this.sortMatchups('team_score')">
+                    Score
+                </th>
+                <th class="team-matchups-header">Opponent</th>
+                <th :class="[opponentScoreClass]" v-on:click="this.sortMatchups('opponent_team_score')">Opponent Score</th>
+            </thead>
+            <tbody>
+                <team-matchup v-for="matchup in this.matchups" v-bind:key="matchup.id" :matchup="matchup"/>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -87,8 +95,8 @@ export default {
                     })
                     .filter((team) => team.espn_team_id !== this.teamId)
                     .value();
-                    this.opponent = _.head(this.opponents);
-                    this.onSelectOpponent(this.opponent);
+                    // this.opponent = _.head(this.opponents);
+                    // this.onSelectOpponent(this.opponent);
                     })
                 .catch((error) => {
                     console.error(error.response);

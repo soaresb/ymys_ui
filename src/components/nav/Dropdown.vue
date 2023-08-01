@@ -2,13 +2,13 @@
     <li class="nav-item dropdown" style="list-style:none; list-style-type: none" v-on:updateOption="methodToRunOnSelect">
         
         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ this.name }}
+            {{ this.name || this.placeholder }}
         </a>
     
         <ul class="dropdown-menu">
             <li v-for="option in this.options" v-bind:key="option._id">
                 <li v-if="option.children && option.children.length" class="dropdown-submenu">
-                    <a class="dropdown-item" :href="option.href"> {{option.name}} <span
+                    <a class="dropdown-item" href="#"> {{option.name}} <span
                         class="float-end custom-toggle-arrow">&#187</span></a>
                     <ul class="dropdown-menu">
                         <li v-for="child in option.children" v-bind:key="child._id" :value="child.value">
@@ -61,6 +61,16 @@ export default {
 </script>
 
 <style>
+
+.dropdown:active >.dropdown-menu{
+  display: block !important;
+}
+
+.dropdown-submenu:active > .dropdown-menu{
+  display: block !important;
+    left: 100%;
+    margin-top: -37px;
+}
 
 .dropdown:hover >.dropdown-menu{
   display: block !important;

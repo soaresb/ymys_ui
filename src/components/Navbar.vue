@@ -1,22 +1,14 @@
 <template>
 <div class="row">
-    <nav class="navbar navbar-expand-lg" style="background-color: #444444; color: #EDEDED">
+    <nav class="navbar navbar-expand-md" style="background-color: #444444; color: #EDEDED">
+        <a class="navbar-brand" href="/">YMYS FF</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a @click="toggleTeams()" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Teams
-                        </a>
-                        <div class="initial" :class="{'dropdown-menu' : teamsIsActive}" aria-labelledby="navbarDropdown">
-                            <div v-for="team in this.teams" v-bind:key="team._id">
-                                <a class="dropdown-item" :href="team.url">{{team.name}}</a>
-                            </div>
-                        </div>
-                    </li>
+                    <dropdown :options="this.teams" :name="'Teams'"/>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/draft">Draft History</a>
                     </li>
@@ -39,36 +31,31 @@ export default {
         Dropdown
     },
     props: {
-        
+        teams: []
     },
     data(){
         return {
-            teams: [],
             teamsIsActive: false,
             league: {},
             years: [],
             weeks: [],
             options: [
-                {"name": "test", "value": "test", "href": "https://www.google.com", children: []}
+                {"name": "test", "value": "test", "href": "https://www.google.com", children: 
+                    [
+                        {"name": "test", "value": "test", "href": "https://www.google.com", children: [{}]}
+                    ]
+                }
             ],
-            options_name: "Test",
-            leagueInfo: {}
+            options_name: "Test"
         }
     },
     mounted() {
         return Promise.all([
-            this.$ymysApi.get("/teams"),
             this.$ymysApi.get("/league/info"),
         ]).then((responses) => {
-            const [teamsResponse, leagueResponse] = responses;
-            this.teams = teamsResponse.data.results.map((team) => {
-                return { ...team, url: `/team/${team.espn_team_id}`};
-            });
+            const [leagueResponse] = responses;
             this.leagueInfo = leagueResponse.data.results;
             return this.setPowerRankingOptions();
-            })
-        .catch((error) => {
-            console.error(error.response);
         });
     },
     methods: {

@@ -1,11 +1,13 @@
 <template>
-    <div class="row player-header">
-        <div class="col-3">
-            <img :src="'https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/' + this.player.espn_id + '.png&w=350&h=254'" width="150">
-        </div>
-        <div class="col align-self-center player-name">
-            <h3>{{this.player.name}}</h3>
-            <span>{{this.player.position}} - {{this.player.pro_team}}</span> 
+    <div class="container">
+        <div class="row player-header">
+            <div class="col-3">
+                <img :src="'https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/' + this.player.espn_id + '.png&w=350&h=254'" width="150">
+            </div>
+            <div class="col align-self-center player-name">
+                <h3>{{this.player.name}}</h3>
+                <span>{{this.player.position}} - {{this.player.pro_team}}</span> 
+            </div>
         </div>
     </div>
 </template>

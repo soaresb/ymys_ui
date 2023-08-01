@@ -1,25 +1,31 @@
 <template>
     <div class="container">
         <div class="row">
-            <team-header :team="this.team"/>
+            <team-header v-if="this.team" :team="this.team"/>
         </div>
         <nav>
             <div class="nav nav-tabs justify-content-end" id="nav-tab" role="tablist">
                 <button class="nav-link active" id="nav-roster-tab" data-bs-toggle="tab" data-bs-target="#nav-roster" type="button" role="tab" aria-controls="nav-roster" aria-selected="true">Roster</button>
                 <button class="nav-link" id="nav-matchups-tab" data-bs-toggle="tab" data-bs-target="#nav-matchups" type="button" role="tab" aria-controls="nav-matchups" aria-selected="false">Matchups</button>
-                <button class="nav-link" id="nav-team-draft-history-tab" data-bs-toggle="tab" data-bs-target="#nav-team-draft-history" type="button" role="tab" aria-controls="nav-team-draft-history" aria-selected="false">Team Draft History</button>
+                <button class="nav-link" id="nav-team-draft-history-tab" data-bs-toggle="tab" data-bs-target="#nav-team-draft-history" type="button" role="tab" aria-controls="nav-team-draft-history" aria-selected="false">Draft History</button>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-roster" role="tabpanel" aria-labelledby="nav-roster-tab">
-                <div class="row">
-                    <div class="col-2 col-sm-1">
-                        Year
-                        <dropdown :options="this.years" :selected="this.year.year" v-on:updateOption="onSelectYear" :name="this.year.year"></dropdown>
-                    </div>
-                    <div class="col-2 col-sm-1">
-                        Week
-                        <dropdown :options="this.weeks" :selected="this.weeks.week" v-on:updateOption="onSelectWeek" :name="this.week.week"></dropdown>
+                <div class="container" style="margin: 15px 0;">
+                    <div class="row">
+                        <div class="col-3 col-sm-4">
+                        </div>
+                        <div class="col-3 col-sm-2">
+                            Year
+                            <dropdown :options="this.years" :selected="this.year.year" v-on:updateOption="onSelectYear" :name="this.year.year"></dropdown>
+                        </div>
+                        <div class="col-3 col-sm-2">
+                            Week
+                            <dropdown :options="this.weeks" :selected="this.weeks.week" v-on:updateOption="onSelectWeek" :name="this.week.week"></dropdown>
+                        </div>
+                        <div class="col-3 col-sm-4">
+                        </div>
                     </div>
                 </div>
                 <div class="row" style="border: 1px solid; border-radius: 10px;">
@@ -90,31 +96,42 @@ export default {
       }
   },
   mounted() {
-      this.fetchRoster(null, null);
-      return Promise.all([
-      this.$ymysApi.get(`/team/${this.$route.params.teamId}`, ),
-      this.$ymysApi.get(`/seasons`),
-      this.$ymysApi.get(`/team/${this.$route.params.teamId}/draftpicks?details=true`, { details: true })
-    ])
-      .then((responses) => {
-        const [teamResponse, seasonsResponse, teamDraftHistory] = responses;
-        this.team = teamResponse.data.results;
-        this.seasons = seasonsResponse.data.results;
-        this.years = seasonsResponse.data.results.seasons.map((season) => {
-          return { year: season.year, name: season.year };
+        this.fetchTeam();
+        this.fetchRoster(null, null);
+        return Promise.all([
+            this.$ymysApi.get(`/seasons`),
+        ])
+        .then((responses) => {
+            const [seasonsResponse] = responses;
+            this.seasons = seasonsResponse.data.results;
+            this.years = seasonsResponse.data.results.seasons.map((season) => {
+            return { year: season.year, name: season.year };
+            });
+            this.weeks = _.last(this.seasons.seasons).weeks.map((week) => {
+            return { week, name: week };
+            });
+            this.fetchDraftPicks();
+            
+        })
+        .catch((error) => {
+            console.error(error.response);
         });
-        this.weeks = _.last(this.seasons.seasons).weeks.map((week) => {
-          return { week, name: week };
-        });
-        this.teamDraftHistory = teamDraftHistory.data.results;
-        
-      })
-      .catch((error) => {
-        console.error(error.response);
-      });
     
   },
   methods: {
+    fetchTeam() {
+        return Promise.all([
+            this.$ymysApi.get(`/team/${this.$route.params.teamId}`)
+        ])
+        .then((responses) => {
+            const [teamResponse] = responses;
+            this.team = teamResponse.data.results;
+        })
+        .catch((error) => {
+            console.error(error.response);
+        });
+    },
+
     fetchRoster(year, week) {
         const params = {};
         let rosterUrl = `/team/${this.$route.params.teamId}/roster`;
@@ -124,16 +141,33 @@ export default {
             this.$ymysApi.get(rosterUrl, { params }),
         ]).then((responses) => {
             const [rosterResponse] = responses;
-            this.roster = rosterResponse.data.results;
+            this.roster = rosterResponse.data.results.map((player) => {
+                if (player.slot_position === "RB/WR/TE") {
+                    player.slot_position = "FLEX"
+                }
+                return player;
+            });
         })
         .catch((error) => {
           console.error(error.response);
         });
     },
 
+    fetchDraftPicks() {
+        return Promise.all([
+        this.$ymysApi.get(`/team/${this.$route.params.teamId}/draftpicks?details=true`, { details: true })
+        ])
+        .then((responses) => {
+            const [teamDraftHistory] = responses;
+            this.teamDraftHistory = teamDraftHistory.data.results;
+        })
+        .catch((error) => {
+            console.error(error.response);
+        });
+    },
+
     onSelectYear(payload) {
         const { year }  = payload;
-        console.log(payload);
         this.year = {
             year,
             name: year
@@ -156,6 +190,10 @@ export default {
 <style>
     nav-item > ::marker {
         display: none;
+    }
+
+    nav-tabs .nav-link {
+        background: #2c3749;
     }
     
 </style>

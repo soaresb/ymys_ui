@@ -6,7 +6,9 @@
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-    <draft-table v-if="!this.loading" :rounds="this.rounds" :order="this.order" />
+    <div class="table-responsive">
+        <draft-table v-if="!this.loading" :rounds="this.rounds" :order="this.order" />
+    </div>
 </template>
 
 <script>
@@ -30,9 +32,7 @@ export default {
             draftPicks: [],
             rounds: [],
             order: [],
-            year: {
-                year: 2021
-            },
+            year: {},
             years: [],
             loading: true,
             padding: 5
@@ -48,6 +48,7 @@ export default {
             this.years = seasonsResponse.data.results.seasons.map((season) => {
                 return { year: season.year, name: season.year };
             });
+            this.year = _.last(this.years);
         })
         .catch((error) => {
             console.error(error.response);

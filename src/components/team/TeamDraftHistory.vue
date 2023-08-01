@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-12 team-draft-history-row">
+            <div class="table-responsive col-12 team-draft-history-row">
                 <h5>
                     Best "Value" Picks
                 </h5>

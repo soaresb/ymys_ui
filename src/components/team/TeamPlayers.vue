@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <table class="table table-scroll table-striped table-dark">
+    <div class="table-responsive">
+        <table class="table table-responsive table-striped table-dark">
         <thead>
             <th>Slot</th>
             <th></th>

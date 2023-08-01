@@ -6,6 +6,12 @@
         <td>
             {{this.matchup.week}}
         </td>
+        <td v-if="this.matchup.winner === this.$route.params.teamId">
+            W
+        </td>
+        <td v-else>
+            L
+        </td>
         <td v-if="this.matchup.team">
             {{this.matchup.team.name}}
         </td>
@@ -57,11 +63,11 @@ export default {
 <style>
 
     .winner {
-        background-color: rgb(144, 202, 119)
+        background-color: rgb(144, 202, 119) !important
     }
 
     .loser {
-        background-color: rgb(228, 135, 67)
+        background-color: rgb(228, 135, 67) !important
     }
 
 </style>

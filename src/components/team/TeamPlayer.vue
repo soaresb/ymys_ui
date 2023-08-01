@@ -64,7 +64,7 @@ export default {
                 case "TE":
                     _class = "team-player-slot-position-te";
                     break
-                case "RB/WR/TE":
+                case "FLEX":
                     _class = "team-player-slot-position-flex";
                     break
                 case "K":
@@ -108,16 +108,16 @@ export default {
     }
 
     .team-player-slot-position-container {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            border-radius: 8px;
-            justify-content: center;
-            width: 42px;
-            height: 34px;
-            margin: auto;
-            color: #444;
-            background: #2c3749;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        border-radius: 8px;
+        justify-content: center;
+        width: 42px;
+        height: 34px;
+        margin: auto;
+        color: #444;
+        background: #2c3749;
     }
 
     .team-player-slot-position-qb {

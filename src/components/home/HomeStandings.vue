@@ -1,7 +1,7 @@
 <template>
     <div class="homerankings">
         <div v-for="division in standings" v-bind:key="division.id" class="homestandings-division">
-            <div>
+            <div class="table-responsive">
                 <table class="table table-scroll table-striped table-dark">
                     <thead>
                         <th>Rank</th>
