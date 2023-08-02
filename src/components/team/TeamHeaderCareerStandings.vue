@@ -1,6 +1,6 @@
 <template>
     <div>
-        <li v-for="(record, year) in this.standings">
+        <li v-for="(record, year) in this.standings" class="team-header-career-standings-li">
             {{ year }}: ({{ record.wins }}-{{ record.losses }})
         </li>
     </div>
@@ -34,5 +34,9 @@ export default {
 </script>
 
 <style>
+
+.team-header-career-standings-li {
+    list-style-type: none;
+}
     
 </style>

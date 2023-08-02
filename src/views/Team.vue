@@ -1,8 +1,6 @@
 <template>
     <div class="container">
-        <div class="row">
-            <team-header v-if="this.team" :team="this.team"/>
-        </div>
+        <team-header v-if="this.team" :team="this.team"/>
         <nav>
             <div class="nav nav-tabs justify-content-end" id="nav-tab" role="tablist">
                 <button class="nav-link active" id="nav-roster-tab" data-bs-toggle="tab" data-bs-target="#nav-roster" type="button" role="tab" aria-controls="nav-roster" aria-selected="true">Roster</button>

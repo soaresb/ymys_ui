@@ -1,13 +1,14 @@
 <template>
-    <div class="row player-header">
-        <div class="col-6 my-auto">
-          
-            <h3>{{this.team.name}} ({{this.wins}}-{{this.losses}})</h3>
-          
-          
-        </div>
-        <div class="col-6">
-            <team-header-career-standings :standings="this.standings" />
+    <div class="row player-header-row">
+        <div class="col-12 col-sm-8 player-header">
+            <div class="row">
+              <div class="col-6 my-auto">
+                <h3>{{this.team.name}} ({{this.wins}}-{{this.losses}})</h3>
+              </div>
+              <div class="col-6 my-auto">
+                <team-header-career-standings :standings="this.standings" />
+              </div>
+            </div>
         </div>
     </div>
 </template>
@@ -47,7 +48,7 @@ export default {
             const { standing } = _.head(careerStandingsResponse.data.results);
             this.wins = standing.wins;
             this.losses = standing.losses;
-            this.standings = _.omit(standing, ['wins', 'losses']);;
+            this.standings = _.omit(standing, ['wins', 'losses']);
         });
       }
     }
@@ -58,5 +59,9 @@ export default {
 </script>
 
 <style>
+
+.player-header-row {
+  margin-top: 20px;
+}
     
 </style>
