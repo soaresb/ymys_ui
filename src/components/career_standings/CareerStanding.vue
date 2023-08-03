@@ -9,7 +9,7 @@
                         <list-with-heading :list="this.standingList" :heading="'Yearly Standings'" />
                     </div>
                     <div class="col-6">
-                        
+                        <career-standing-superlatives :team="this.standing.team"/>
                     </div>
                     <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
                 </div>
@@ -22,13 +22,15 @@
 <script>
 import ListWithHeading from '../common/ListWithHeading.vue'
 import _ from "lodash"
+import CareerStandingSuperlatives from './CareerStandingSuperlatives.vue'
 
 
 
 export default {
     name: 'CareerStanding',
     components: {
-        ListWithHeading
+        ListWithHeading,
+        CareerStandingSuperlatives
     },
     props: {
         standing: {}
