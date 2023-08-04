@@ -6,6 +6,7 @@
                 <button class="nav-link active" id="nav-roster-tab" data-bs-toggle="tab" data-bs-target="#nav-roster" type="button" role="tab" aria-controls="nav-roster" aria-selected="true">Roster</button>
                 <button class="nav-link" id="nav-matchups-tab" data-bs-toggle="tab" data-bs-target="#nav-matchups" type="button" role="tab" aria-controls="nav-matchups" aria-selected="false">Matchups</button>
                 <button class="nav-link" id="nav-team-draft-history-tab" data-bs-toggle="tab" data-bs-target="#nav-team-draft-history" type="button" role="tab" aria-controls="nav-team-draft-history" aria-selected="false">Draft History</button>
+                <button class="nav-link" id="nav-team-superlatives-tab" data-bs-toggle="tab" data-bs-target="#nav-team-superlatives" type="button" role="tab" aria-controls="nav-team-superlatives" aria-selected="false">Superlatives</button>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
@@ -46,6 +47,13 @@
                     </div>
                 </div>
             </div>
+            <div class="tab-pane fade" id="nav-team-superlatives" role="tabpanel" aria-labelledby="nav-team-superlatives-tab">
+                <div class="row">
+                    <div class="col-12">
+                        <team-superlatives :team="this.team" v-if="this.team" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -58,6 +66,7 @@ import TeamPlayers from '../components/team/TeamPlayers.vue';
 import TeamHeader from '../components/team/TeamHeader.vue';
 import TeamMatchups from '../components/team/TeamMatchups.vue';
 import TeamDraftHistory from '../components/team/TeamDraftHistory.vue';
+import TeamSuperlatives from '../components/team/TeamSuperlatives.vue';
 import Dropdown from '../components/nav/Dropdown.vue'
 import _ from 'lodash'
 
@@ -69,6 +78,7 @@ export default {
       TeamHeader,
       TeamMatchups,
       TeamDraftHistory,
+      TeamSuperlatives,
       Dropdown
   },
   created() {
