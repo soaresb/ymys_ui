@@ -1,14 +1,16 @@
 <template>
-    <h6>Superlatives</h6>
-    <div class="career-standing-superlatives-container">
-        <li v-for="(superlatives, year) in this.superlatives" v-bind:key="superlatives.id" class="career-standing-superlatives-li">
-            <span><h7>{{year}}</h7></span>
-            <div v-for="superlative in superlatives" v-bind:key="superlative.id">
+    <div class="team-superlatives">
+        <h6>Superlatives</h6>
+        <div class="team-standing-superlatives-container">
+            <li v-for="(superlatives, year) in this.superlatives" v-bind:key="superlatives.id" class="career-standing-superlatives-li">
+                <span><h7>{{year}}</h7></span>
+                <div v-for="superlative in superlatives" v-bind:key="superlative.id">
 
-                <img alt="Vue logo" :src="'https://ymys.s3.us-east-2.amazonaws.com/images/icons/' + superlative.image" style="width: 40px"> {{superlative.superlative_name}} <span v-if="superlative.value">- {{superlative.value}}</span>
-            </div>
-            <br />
-        </li>
+                    <img alt="Vue logo" :src="'https://ymys.s3.us-east-2.amazonaws.com/images/icons/' + superlative.image" style="width: 40px"> {{superlative.superlative_name}} <span v-if="superlative.value">- {{superlative.value}}</span>
+                </div>
+                <br />
+            </li>
+        </div>
     </div>
     
 </template>
@@ -32,7 +34,7 @@ export default {
     },
     mounted() {
         const params = {};
-        params.teamId = this.team.espn_team_id;
+        params.teamId = this.$route.params.teamId;
         return Promise.all([
             this.$ymysApi.get("team/superlatives", { params }),
         ]).then((responses) => {
@@ -52,13 +54,8 @@ export default {
 
 <style>
 
-.career-standing-superlatives-li {
-    list-style: none;
-}
-
-.career-standing-superlatives-container {
-    max-height: 300px;
-    overflow-y: auto
+.team-superlatives {
+    margin-top: 20px;
 }
 
 </style>

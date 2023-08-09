@@ -5,10 +5,13 @@
             <h5 class="card-title">{{this.standing.team.name}} ({{this.standing.standing.wins}}-{{this.standing.standing.losses}})</h5>
             <div class="container">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-5">
                         <list-with-heading :list="this.standingList" :heading="'Yearly Standings'" />
                     </div>
-                    <div class="col-6">
+                    <div class="col-2">
+                        <img alt="Vue logo" :src="this.standing.team.logo_url" style="width: 100%">
+                    </div>
+                    <div class="col-5">
                         <career-standing-superlatives :team="this.standing.team"/>
                     </div>
                     <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->

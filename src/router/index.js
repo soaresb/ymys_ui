@@ -2,14 +2,31 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PowerRankings from "../views/PowerRankings.vue"
 import EditPowerRankings from "../views/EditPowerRankings.vue"
+import CreatePowerRanking from "../views/CreatePowerRanking.vue"
 import Team from "../views/Team.vue"
 import Player from "../views/Player.vue"
 import Draft from "../views/Draft.vue"
+import Login from "../views/Login.vue"
 import CareerStandings from "../views/CareerStandings.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
+      meta: {
+        guest: true
+      },
+      beforeEnter: (to, from, next) => {
+        if (to.redirectedFrom) {
+          next();
+        } else {
+          next("/");
+        }
+      }
+    },
     {
       path: '/',
       name: 'home',
@@ -36,9 +53,35 @@ const router = createRouter({
     name: "edit-power-rankings",
     component: EditPowerRankings,
     meta: {
-      guest: true
+      requiresAuth: true
     },
-},
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem("allowed")) {
+        next();
+      } else {
+        next({
+          path: '/login'
+        });
+      }
+    }
+  },
+  {
+    path: "/power-rankings/:year/:week/create",
+    name: "create-power-rankings",
+    component: CreatePowerRanking,
+    meta: {
+      requiresAuth: true
+    },
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem("allowed")) {
+        next();
+      } else {
+        next({
+          path: '/login'
+        });
+      }
+    }
+  },
   {
       path: '/team/:teamId',
       name: 'team',
@@ -64,6 +107,6 @@ const router = createRouter({
     }
   }
   ]
-})
+});
 
 export default router

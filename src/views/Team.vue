@@ -50,7 +50,7 @@
             <div class="tab-pane fade" id="nav-team-superlatives" role="tabpanel" aria-labelledby="nav-team-superlatives-tab">
                 <div class="row">
                     <div class="col-12">
-                        <team-superlatives :team="this.team" v-if="this.team" />
+                        <team-superlatives :team="this.team" v-if="this.team !== {}" />
                     </div>
                 </div>
             </div>
