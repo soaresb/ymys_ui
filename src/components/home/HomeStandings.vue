@@ -4,12 +4,12 @@
             <div class="table-responsive">
                 <table class="table table-scroll table-striped table-dark">
                     <thead>
-                        <th>Rank</th>
-                        <th>Team</th>
-                        <th>W</th>
-                        <th>L</th>
-                        <th>T</th>
-                        <th>Points</th>
+                        <th class="homestandings-header">Rank</th>
+                        <th class="homestandings-header">Team</th>
+                        <th class="homestandings-header">W</th>
+                        <th class="homestandings-header">L</th>
+                        <th class="homestandings-header">T</th>
+                        <th class="homestandings-header">Points</th>
                     </thead>
                     <tbody>
                         <home-standing-row v-for="team in division" v-bind:key="team.id" class="homestandings-team" :team="team" />
@@ -64,6 +64,11 @@ export default {
     .homestandings-division {
         border: 1px solid black;
         margin: 10px 0;
+    }
+
+    .homestandings-header {
+        overflow: auto;
+        max-width: 100px;   
     }
 
 </style>

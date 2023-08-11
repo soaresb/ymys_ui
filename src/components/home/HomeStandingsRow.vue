@@ -1,21 +1,21 @@
 <template>
     <tr>
-        <td class="team-player-center-text-td">
+        <td class="team-player-center-text-td homestandings-header">
             {{this.team.division_ranking}}
         </td>
-        <td class="team-player-center-text-td">
+        <td class="team-player-center-text-td homestandings-header">
             {{this.team.team_name}}
         </td>
-        <td class="team-player-center-text-td">
+        <td class="team-player-center-text-td homestandings-header">
             {{this.team.wins}}
         </td>
-        <td class="team-player-center-text-td">
+        <td class="team-player-center-text-td homestandings-header">
             {{this.team.losses}}
         </td>
-        <td class="team-player-center-text-td">
+        <td class="team-player-center-text-td homestandings-header">
             {{this.team.ties}}
         </td>
-        <td class="team-player-center-text-td">
+        <td class="team-player-center-text-td homestandings-header">
             {{this.team.points}}
         </td>
         

@@ -9,7 +9,7 @@
           <div class="row">
               <div class="col-6">
                 <div class="card home-card">
-                  <img class="card-img-top home-card-img" src="https://ymys.s3.us-east-2.amazonaws.com/images/unai.png" alt="Card image cap">
+                  <img class="card-img-top home-card-img" src="https://ymys.s3.us-east-2.amazonaws.com/images/kyle.png" alt="Card image cap">
                   <div class="card-body">
                     <h5 class="card-title">Latest Rankings</h5>
                     <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
@@ -23,7 +23,7 @@
                   <div class="card-body">
                     <h5 class="card-title">YMYS History</h5>
                     <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
-                    <a href="#" class="btn btn-light">Go</a>
+                    <a href="/career-standings" class="btn btn-light">Go</a>
                   </div>
                 </div>
               </div>
@@ -93,7 +93,6 @@ export default {
 .home-card {
     background-color: #2c3749 !important;
     color: white !important;
-    min-height: 500px;
 }
 
 </style>
