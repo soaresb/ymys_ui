@@ -1,19 +1,33 @@
 <template>
   <br/>
   <div style="text-align: center; align-items: center; margin: auto;">
-      <form>
-        <div class="form-group row">
-          <label for="year" class="col-sm-2 col-form-label">Year</label>
-          <div class="col-sm-6">
+      <form class="row g-3">
+        <div class="col">
+          <label for="year" class="col-form-label">Year</label>
+          <div>
           <input v-model="year" type="text" class="form-control" id="year" placeholder="2021">
+          </div>
+        </div>
+        <div class="col">
+          <label for="week" class="col-form-label">Week</label>
+          <div>
+            <input v-model="week" type="text" class="form-control" id="week" placeholder="1">
+          </div>
+        </div>
+        <div>
+          <label for="week" class="col-sm-2 col-form-label"></label>
+          <div class="col">
+            <label for="checkbox">Hidden</label>
+            <input type="checkbox" id="checkbox" class="create-ranking-checkbox" v-model="hidden" />
           </div>
         </div>
         <br/>
         <div class="form-group row">
-          <label for="week" class="col-sm-2 col-form-label">Week</label>
-          <div class="col-sm-6">
-            <input v-model="week" type="text" class="form-control" id="week" placeholder="1">
-          </div>
+          
+        </div>
+        <br/>
+        <div class="form-group row">
+          
         </div>
     </form>
   </div>
@@ -34,6 +48,7 @@
   import ImageCompress from 'quill-image-compress';
   import ImageUploader from 'quill-image-uploader';
   import { ymysApi } from "../../api/api";
+  import { useToast } from "vue-toastification";
 
 export default {
   name: 'App',
@@ -90,7 +105,8 @@ export default {
     return {
       week: "",
       year: "",
-      html: ""
+      html: "",
+      hidden: false
     }
   },
   // mounted() lifecycle hook called after component is in the DOM  
@@ -101,18 +117,36 @@ export default {
   },
   methods: {
     submit() {
-      var html = this.$refs.editor.getHTML();
-      const data = { body: html, year: this.year, week: this.week }
-      return Promise.all([
-          this.$ymysApi.post(
-            "/league/power-ranking", 
-            data
-          )
-      ]).then((responses) => {
-          return {};
-      }).catch((err) => {
-          console.log(err);
-      })
+      if (this.week.length === 0) {
+        const toast = useToast();
+        toast.error ("Please enter a week.", {
+            timeout: 2000,
+            icon: false
+        });
+      } else if (this.year.length === 0) {
+        const toast = useToast();
+        toast.error ("Please enter a year.", {
+            timeout: 2000,
+            icon: false
+        });
+      } else {
+        var html = this.$refs.editor.getHTML();
+        const data = { body: html, year: this.year, week: this.week, hidden: this.hidden }
+        return Promise.all([
+            this.$ymysApi.post(
+              "/league/power-ranking", 
+              data
+            )
+        ]).then((responses) => {
+            const toast = useToast();
+            toast.success ("Rankings Saved.", {
+                timeout: 2000,
+                icon: false
+            });
+        }).catch((err) => {
+            console.log(err);
+        })
+      }
     },
     saveText() {
         var html = this.$refs.editor.getHTML();
@@ -129,5 +163,8 @@ export default {
     }
     .ranking-save-button { 
         margin-bottom: 30px;
+    }
+    .create-ranking-checkbox {
+      margin-left: 5px;
     }
 </style>

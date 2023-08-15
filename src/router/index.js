@@ -18,13 +18,6 @@ const router = createRouter({
       component: Login,
       meta: {
         guest: true
-      },
-      beforeEnter: (to, from, next) => {
-        if (to.redirectedFrom) {
-          next();
-        } else {
-          next("/");
-        }
       }
     },
     {
@@ -56,7 +49,7 @@ const router = createRouter({
       requiresAuth: true
     },
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem("allowed")) {
+      if (localStorage.getItem("token")) {
         next();
       } else {
         next({
@@ -66,14 +59,14 @@ const router = createRouter({
     }
   },
   {
-    path: "/power-rankings/:year/:week/create",
+    path: "/power-rankings/create",
     name: "create-power-rankings",
     component: CreatePowerRanking,
     meta: {
       requiresAuth: true
     },
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem("allowed")) {
+      if (localStorage.getItem("token")) {
         next();
       } else {
         next({

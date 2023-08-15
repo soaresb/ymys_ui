@@ -9,8 +9,13 @@
     </nav>
     <div class="row" style="border: 1px solid; border-radius: 10px;"> 
         <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-ymys-game-log" role="tabpanel" aria-labelledby="nav-ymys-game-log-tab">
-            <player-stats :playerStats="this.playerStats" :player="this.player" />
+        <div class="tab-pane fade show active player-player-stats" id="nav-ymys-game-log" role="tabpanel" aria-labelledby="nav-ymys-game-log-tab">
+            <div v-if="this.loading" class="text-center player-spinner-container" style="height: 100%">
+                <div class="spinner-grow" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="sr-only"></span>
+                </div>
+            </div>
+            <player-stats v-else :playerStats="this.playerStats" :player="this.player" />
         </div>
         <!-- <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
             <div class="row">
@@ -51,7 +56,8 @@ export default {
           id: this.$route.params.playerId,
           player: {},
           playerStats: [],
-          draftHistory: null
+          draftHistory: null,
+          loading: true
       }
   },
   mounted() {
@@ -78,6 +84,7 @@ export default {
             ]).then((responses) => {
                 const [playerStatsResponse] = responses;
                 this.playerStats = playerStatsResponse.data.results;
+                this.loading = false;
             })
             .catch((error) => {
                 console.error(error.response);
@@ -103,3 +110,14 @@ export default {
   }
 }
 </script>
+
+<style>
+    .player-player-stats {
+        min-height: 100px;
+    }
+
+    .player-spinner-container {
+        line-height: 100px;
+    }
+
+</style>

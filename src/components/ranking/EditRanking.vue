@@ -1,16 +1,18 @@
 <template>
-  <br/>
-  <div style="text-align: center; align-items: center; margin: auto;">
-      
-  </div>
-    
+    <div :v-if="this.allowed" class="edit-rankings">
     <br/>
-    <div class="editor-container">
-        <QuillEditor :modules="modules" theme="snow" toolbar="full" ref="editor"/>
+    <div style="text-align: center; align-items: center; margin: auto;">
+        
     </div>
-    
-    <br />
-    <button @click="this.submit" type="button" class="btn btn-light ranking-save-button">Save</button>
+        
+        <br/>
+        <div class="editor-container">
+            <QuillEditor :modules="modules" theme="snow" toolbar="full" ref="editor"/>
+        </div>
+        
+        <br />
+        <button @click="this.submit" type="button" class="btn btn-light ranking-save-button">Save</button>
+    </div>
 </template>
 
 <script>
@@ -75,11 +77,15 @@ export default {
     ]
     return { modules }
   },
+  created() {
+    this.allowed == localStorage.getItem("token") !== undefined;
+  },
   data() {
     return {
       week: "",
       year: "",
-      html: ""
+      html: "",
+      allowed: false
     }
   },
   mounted() {
@@ -96,32 +102,44 @@ export default {
             console.log(err);
         })
   },
-  methods: {
-    scrollToTop() {
-        window.scrollTo(0,0);
-    },
-    submit() {
-      var html = this.$refs.editor.getHTML();
-      const data = { body: html, year: this.year, week: this.week }
-      return Promise.all([
-          this.$ymysApi.post(
-            "/league/power-ranking", 
-            data
-          )
-      ]).then((responses) => {
-            const toast = useToast();
-            toast.success("Rankings saved!", {
-                timeout: 3000
-            });
-      }).catch((err) => {
-          console.log(err);
-      })
-    },
-    saveText() {
+    methods: {
+        scrollToTop() {
+            window.scrollTo(0,0);
+        },
+        submit() {
         var html = this.$refs.editor.getHTML();
-        this.html = html;
+        const data = { body: html, year: this.year, week: this.week }
+        return Promise.all([
+            this.$ymysApi.post(
+                "/league/power-ranking", 
+                data
+            )
+        ]).then((responses) => {
+                const toast = useToast();
+                toast.success("Rankings saved!", {
+                    timeout: 3000
+                });
+        }).catch((err) => {
+            console.log(err);
+        })
+        },
+        saveText() {
+            var html = this.$refs.editor.getHTML();
+            this.html = html;
+        },
+        checkToken() {
+            return Promise.all([
+                this.$ymysApi.get("/auth/check-token", { params: { token: localStorage.getItem("token") } })
+            ]).then((responses) => {
+                const [authResponse] = responses;
+                if (authResponse.status_code === 200) {
+                    this.allowed = true;
+                } else {
+                    localStorage.removeItem("token");
+                }
+            });
+        }
     }
-  },
 }
 </script>
 

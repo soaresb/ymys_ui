@@ -35,18 +35,18 @@ export default {
             year: {},
             years: [],
             loading: true,
-            padding: 5
+            padding: "5px"
         }
     },
     mounted() {
         this.fetchDraft();
         return Promise.all([
-            this.$ymysApi.get(`/seasons`)
+            this.$ymysApi.get(`/league/draft/years`)
         ])
         .then((responses) => {
             const [seasonsResponse] = responses;
-            this.years = seasonsResponse.data.results.seasons.map((season) => {
-                return { year: season.year, name: season.year };
+            this.years = seasonsResponse.data.results.map((year) => {
+                return { year, name: year };
             });
             this.year = _.last(this.years);
         })

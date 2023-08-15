@@ -1,5 +1,5 @@
 <template>
-    <li class="nav-item dropdown" style="list-style:none; list-style-type: none" v-on:updateOption="methodToRunOnSelect">
+    <li class="nav-item dropdown" :style="style" v-on:updateOption="methodToRunOnSelect">
         
         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ this.name || this.placeholder }}
@@ -37,7 +37,12 @@ export default {
         value: "",
         href: "",
         placeholder: "",
-        padding: 0
+        padding: "0px"
+    },
+    computed: {
+      style () {
+        return "list-style:none; list-style-type: none; padding:" + this.padding
+      }
     },
     data() {
         return {
@@ -97,6 +102,10 @@ export default {
     font-size: 18px;
     margin-top: 1px;
     line-height: 12px;
+}
+
+.dropdown {
+    padding: var(this.padding);
 }
     
 </style>

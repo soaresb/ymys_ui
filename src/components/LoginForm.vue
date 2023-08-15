@@ -37,9 +37,25 @@ export default {
         }
     },
     mounted() {
-        
+        const loggedIn = localStorage.getItem("token") !== undefined;
+        if (loggedIn) {
+             this.$router.push({ path: "/" });
+        }
     },
     methods: {
+        checkToken() {
+            return Promise.all([
+                this.$ymysApi.get("/auth/check-token", { params: { token: localStorage.getItem("token") } })
+            ]).then((responses) => {
+                const [authResponse] = responses;
+                if (authResponse.status_code === 200) {
+                    return true;
+                } else {
+                    localStorage.removeItem("token");
+                }
+                return false;
+            });
+        },
         clearPassword() {
             this.password = "";
         },
@@ -60,15 +76,17 @@ export default {
             } else {
                 if (this.password.length > 0) {
                     this.$ymysApi.post('/login', {
-                        email: this.username,
+                        username: this.username,
                         password: this.password
                     })
                     .then(response => {
                         if (response && response.status === 200) {
-                            localStorage.setItem("allowed", true);
+                            localStorage.setItem("token", response.data.results.token);
                         }
-                        if(this.$route.redirectedFrom.fullPath != null){
+                        if (this.$route.redirectedFrom && this.$route.redirectedFrom.fullPath != null){
                             this.$router.push({ path: this.$route.redirectedFrom.path });
+                        } else {
+                            this.$router.push({ path: "/" });
                         }
 
                     })

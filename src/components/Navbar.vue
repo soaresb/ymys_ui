@@ -1,13 +1,13 @@
 <template>
 <div class="row">
-    <nav class="navbar sticky-top navbar-expand-md" style="background-color: #444444; color: #EDEDED">
-        <a class="navbar-brand" href="/">
-            <img src="https://ymys.s3.us-east-2.amazonaws.com/images/unai.png" width="70" alt="">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-md" style="background-color: #444444; color: #EDEDED">
         <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="https://ymys.s3.us-east-2.amazonaws.com/images/unai.png" width="70" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <dropdown :options="this.teams" :name="'Teams'"/>
@@ -19,6 +19,12 @@
                         <a class="nav-link" aria-current="page" href="/career-standings">YMYS Career Standings</a>
                     </li>
                 </ul>
+                <span v-if="!this.isLoggedIn" class="navbar-text">
+                    <a class="nav-link" aria-current="page" href="/login">Login</a>
+                </span>
+                <span v-else class="navbar-text">
+                    <dropdown :options="this.adminOptions" :name="'Admin Options'"/>
+                </span>
             </div>
         </div>
     </nav>
@@ -51,7 +57,11 @@ export default {
                     ]
                 }
             ],
-            options_name: "Test"
+            adminOptions: [
+                {"name": "Create Ranking Page", "value": "Create Ranking Page", "href": "/power-rankings/create"}
+            ],
+            options_name: "Test",
+            isLoggedIn: false
         }
     },
     mounted() {
@@ -60,6 +70,7 @@ export default {
         ]).then((responses) => {
             const [leagueResponse] = responses;
             this.leagueInfo = leagueResponse.data.results;
+            this.checkLoggedIn()
             return this.setPowerRankingOptions();
         });
     },
@@ -90,7 +101,13 @@ export default {
             //     options.push(year);
             // });
             this.options = options;
-        }
+        },
+
+        checkLoggedIn() {
+            if (localStorage.getItem("token")) {
+                this.isLoggedIn = true;
+            }
+        },
     }
     
         
